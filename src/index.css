@@ -1,0 +1,495 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;600;700&family=VT323&display=swap');
+
+:root {
+  --bg-black: #060608;
+  --bg-dark: #0d0d12;
+  --bg-card: rgba(18, 18, 26, 0.85);
+  --accent-red: #dc2626;
+  --accent-red-bright: #ef4444;
+  --accent-red-dark: #991b1b;
+  --accent-glow: rgba(220, 38, 38, 0.4);
+  --text-white: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #272738;
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-retro: 'VT323', monospace;
+  --font-ui: 'Space Grotesk', -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-black);
+  color: var(--text-white);
+  font-family: var(--font-ui);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background animated stars */
+.space-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(1px 1px at 15% 15%, #ffffff, transparent),
+    radial-gradient(1px 1px at 35% 80%, #ffffff, transparent),
+    radial-gradient(2px 2px at 55% 25%, #fca5a5, transparent),
+    radial-gradient(1px 1px at 70% 65%, #ffffff, transparent),
+    radial-gradient(2px 2px at 85% 15%, #ef4444, transparent),
+    radial-gradient(1px 1px at 90% 85%, #ffffff, transparent),
+    radial-gradient(1px 1px at 20% 60%, #ffffff, transparent),
+    radial-gradient(2px 2px at 45% 45%, #ffffff, transparent),
+    radial-gradient(1px 1px at 65% 90%, #ffffff, transparent),
+    radial-gradient(circle at 50% 50%, #110508 0%, #060608 100%);
+  background-size: 550px 550px, 450px 450px, 600px 600px, 350px 350px, 500px 500px, 400px 400px, 300px 300px, 480px 480px, 380px 380px, 100% 100%;
+}
+
+/* Subtle CRT Scanline overlay */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.6;
+}
+
+/* App Container */
+.game-viewport {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Game Header */
+.game-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.game-logo-badge {
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--accent-red-bright);
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.header-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.icon-btn {
+  background: rgba(30, 30, 40, 0.6);
+  border: 1px solid #3f3f50;
+  color: var(--text-white);
+  padding: 0.4rem 0.7rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: var(--accent-red-dark);
+  border-color: var(--accent-red);
+}
+
+/* Main Screen Stage Canvas */
+.stage-container {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+/* Stage Header & Progress */
+.stage-tag {
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  color: var(--accent-red-bright);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  background: rgba(220, 38, 38, 0.12);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.stage-title {
+  font-family: var(--font-pixel);
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: var(--text-white);
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 600px) {
+  .stage-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Blood-Red Primary Action Button */
+.btn-red {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+  color: #ffffff;
+  font-family: var(--font-pixel);
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  min-height: 54px;
+  border: 2px solid #fca5a5;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #7f1d1d, 0 0 20px rgba(220, 38, 38, 0.5);
+  transition: all 0.1s ease;
+  letter-spacing: 1px;
+}
+
+.btn-red:hover {
+  background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #7f1d1d, 0 0 28px rgba(239, 68, 68, 0.7);
+}
+
+.btn-red:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #7f1d1d, 0 0 15px rgba(220, 38, 38, 0.5);
+}
+
+.btn-secondary {
+  background: rgba(30, 30, 45, 0.8);
+  border: 1px solid #4a4a60;
+  color: var(--text-white);
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-red);
+  background: rgba(220, 38, 38, 0.15);
+}
+
+/* Choices list (Stage 1) */
+.choices-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 1.5rem 0;
+}
+
+.choice-card {
+  background: rgba(20, 20, 28, 0.85);
+  border: 2px solid #2e2e42;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.15s ease;
+  font-size: 1.05rem;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--text-white);
+}
+
+.choice-card:hover {
+  border-color: var(--accent-red-bright);
+  background: rgba(220, 38, 38, 0.12);
+  transform: translateX(4px);
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.25);
+}
+
+.choice-badge {
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  background: var(--accent-red);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Dialogue Box */
+.dialogue-box {
+  width: 100%;
+  max-width: 640px;
+  background: rgba(14, 14, 20, 0.9);
+  border: 2px solid var(--accent-red-dark);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0;
+  position: relative;
+  text-align: left;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(220, 38, 38, 0.08);
+}
+
+.dialogue-box.active-speaker-alien {
+  border-left: 5px solid #10b981;
+}
+
+.dialogue-box.active-speaker-robot {
+  border-left: 5px solid #38bdf8;
+}
+
+.dialogue-speaker {
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.speaker-alien {
+  color: #34d399;
+}
+
+.speaker-robot {
+  color: #38bdf8;
+}
+
+.dialogue-text {
+  font-family: var(--font-ui);
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--text-white);
+  font-weight: 500;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Ship Flyby Opening */
+@keyframes travelSpace {
+  0% { transform: translateX(-40px) translateY(5px); }
+  50% { transform: translateX(40px) translateY(-5px); }
+  100% { transform: translateX(-40px) translateY(5px); }
+}
+
+.animate-travel {
+  animation: travelSpace 6s ease-in-out infinite;
+}
+
+/* Screen Shake for Launch Smackdown */
+@keyframes shakeScreen {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  20% { transform: translate(-2px, -1px) rotate(-0.5deg); }
+  40% { transform: translate(2px, 0px) rotate(0.5deg); }
+  60% { transform: translate(-1px, 2px) rotate(0deg); }
+  80% { transform: translate(2px, -1px) rotate(0.5deg); }
+  100% { transform: translate(1px, 1px) rotate(0deg); }
+}
+
+.shake-mild {
+  animation: shakeScreen 0.15s infinite;
+}
+
+.shake-wild {
+  animation: shakeScreen 0.08s infinite;
+}
+
+/* Speed Lines on Stage 5 */
+.speed-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 20px,
+    rgba(255, 255, 255, 0.08) 20px,
+    rgba(255, 255, 255, 0.08) 22px
+  );
+  animation: speedPan 0.3s linear infinite;
+}
+
+@keyframes speedPan {
+  from { background-position: 0 0; }
+  to { background-position: 0 60px; }
+}
+
+/* Progress bar container */
+.progress-bar-wrap {
+  width: 100%;
+  max-width: 500px;
+  height: 24px;
+  background: #111118;
+  border: 2px solid #333348;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  margin: 1rem 0;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #991b1b, #ef4444);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.7);
+  transition: width 0.15s ease-out;
+}
+
+.progress-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  color: #ffffff;
+  text-shadow: 0 1px 3px #000;
+}
+
+/* Food items grid (Stage 3) */
+.fridge-room {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  min-height: 320px;
+  background: radial-gradient(circle at 50% 40%, #1e1b2e 0%, #0c0a14 100%);
+  border: 2px dashed #475569;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+}
+
+.food-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(25, 25, 38, 0.6);
+  border: 2px solid #374151;
+  border-radius: 10px;
+  padding: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-width: 110px;
+}
+
+.food-card:hover {
+  transform: translateY(-6px) scale(1.06);
+  border-color: var(--accent-red-bright);
+  background: rgba(220, 38, 38, 0.15);
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+}
+
+.food-card:active {
+  transform: scale(0.92);
+}
+
+.food-name {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: var(--text-white);
+  letter-spacing: 0.5px;
+}
+
+/* Spark animation for stage 4 */
+@keyframes sparkJitter {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.2) rotate(15deg); opacity: 0.8; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.spark-active {
+  animation: sparkJitter 0.2s infinite;
+}
+
+/* Stage stepper footer */
+.stepper-nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0 0.5rem;
+}
+
+.step-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: #272738;
+  transition: all 0.25s ease;
+}
+
+.step-dot.active {
+  background: var(--accent-red-bright);
+  box-shadow: 0 0 8px var(--accent-red);
+  transform: scale(1.2);
+}
+
+.step-dot.completed {
+  background: #7f1d1d;
+}
